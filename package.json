@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/RobelGeb/weatherAPI#readme",
   "dependencies": {
+    "express": "^4.20.0",
     "fs": "^0.0.1-security",
     "nodemon": "^3.1.4",
     "superagent": "^10.1.0"
