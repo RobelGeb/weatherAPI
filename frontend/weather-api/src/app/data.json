@@ -1,0 +1,44 @@
+{
+    "weathers": [
+        {
+            "datetime": "2024-09-16",
+            "tempmax": 69,
+            "temp": 63.8,
+            "conditions": "Clear",
+            "description": "Clear conditions throughout the day.",
+            "icon": "clear-day"
+        },
+        {
+            "datetime": "2024-09-17",
+            "tempmax": 63.1,
+            "temp": 58.3,
+            "conditions": "Rain, Partially cloudy",
+            "description": "Partly cloudy throughout the day with afternoon rain.",
+            "icon": "rain"
+        },
+        {
+            "datetime": "2024-09-18",
+            "tempmax": 65.9,
+            "temp": 61,
+            "conditions": "Partially cloudy",
+            "description": "Partly cloudy throughout the day.",
+            "icon": "partly-cloudy-day"
+        },
+        {
+            "datetime": "2024-09-19",
+            "tempmax": 67,
+            "temp": 60.2,
+            "conditions": "Partially cloudy",
+            "description": "Partly cloudy throughout the day.",
+            "icon": "partly-cloudy-day"
+        },
+        {
+            "datetime": "2024-09-20",
+            "tempmax": 65.2,
+            "temp": 59.7,
+            "conditions": "Partially cloudy",
+            "description": "Partly cloudy throughout the day.",
+            "icon": "partly-cloudy-day"
+        }
+    ]
+}
