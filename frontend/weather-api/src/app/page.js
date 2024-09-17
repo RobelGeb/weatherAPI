@@ -18,6 +18,14 @@ export default function Home() {
       .catch((err) => console.log(err));
   }
 
+  const getDay = (dateStr) => {
+    const yr = dateStr.substring(0, 4);
+    const mo = dateStr.substring(5, 7);
+    const day = dateStr.substring(8, 10);
+    var date = new Date(Date.UTC(yr, mo, day));
+    return date.toLocaleDateString('en-US', {weekday: 'long'});
+  } 
+
   return (
     <div className="flex flex-col">    
       <div>
@@ -32,7 +40,7 @@ export default function Home() {
           weatherData.map((weather) => {
             return(
               <ul className="inline-block py-4 pr-2 text-white" key={weather.datetime}>
-                <li>Date: {weather.datetime}</li>
+                <li>Date: {getDay(weather.datetime)}</li>
                 <li>Temp: {weather.temp}</li>
                 <li>Weather: {weather.conditions}</li>
               </ul>          
