@@ -31,7 +31,7 @@ export default function Home() {
         {
           weatherData.map((weather) => {
             return(
-              <ul className="inline-block py-4 pr-2 text-white">
+              <ul className="inline-block py-4 pr-2 text-white" key={weather.datetime}>
                 <li>Date: {weather.datetime}</li>
                 <li>Temp: {weather.temp}</li>
                 <li>Weather: {weather.conditions}</li>
