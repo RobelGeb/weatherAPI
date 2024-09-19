@@ -12,16 +12,6 @@ dotenv.config({path:"./config.env"});
 
 const weatherLink = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Seattle%2C%20WA?unitGroup=us&elements=datetime%2Cname%2Ctempmax%2Ctemp%2Cconditions%2Cdescription%2Cicon&include=days%2Cfcst&key=${process.env.API_KEY}&contentType=json`;
 
-//goal: have an object formatted as follows:
-    //datetime: [max temp, conditions]
-    //datetime: [max temp, conditions]
-    //datetime: [max temp, conditions]
-    //datetime: [max temp, conditions]
-    //datetime: [max temp, conditions]
-//5 day forecast with max temps and icons depending on the "conditions"
-
-//const stringIt = JSON.stringify(weather.body.days[0].tempmax);
-
 const getWeather = async () => {
     try {
         const data = await superagent.get(weatherLink);
@@ -37,13 +27,11 @@ getWeather();
 
 app.get('/', async (req, res) => {
     const result = await getWeather();
-    const reduced = result.splice(0,5);
-    console.log(reduced);
+    const fiveDay = result.splice(0,5);
+    console.log(fiveDay);
     res
-        .status(200)
-        .json({reduced});
-    // const data = {message:"Hello from the server."}
-    // res.json({data});
+    .status(200)
+    .json({fiveDay});
 });
 
 app.post('/', (req, res) => {

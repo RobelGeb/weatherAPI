@@ -21,7 +21,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.20.0",
     "fs": "^0.0.1-security",
-    "nodemon": "^3.1.4",
+    "nodemon": "^3.1.5",
     "superagent": "^10.1.0"
   }
 }
