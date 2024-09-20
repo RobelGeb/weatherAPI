@@ -1,9 +1,10 @@
 "use client"
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { infinity } from "ldrs";
+//import data from './data.json';
 
-//infinity.register();
+//const wetha = data.weathers;
+//console.log(`weather: ${JSON.stringify(wetha)}`);
 
 export default function Home() {
   const [fiveDayData, setfiveDayData] = useState([]);
@@ -11,9 +12,8 @@ export default function Home() {
 
   useEffect(() => {
     connect();
-    
     //console.log(JSON.stringify(todayData));
-  });
+  }, []);
 
   const connect = async () => {
     await fetch("http://localhost:8000/", {mode: 'cors'})
@@ -26,18 +26,6 @@ export default function Home() {
   }
 
   const getDay = (dateStr) => {
-    if (dateStr == '') {
-      return (
-        <l-infinity
-          size="55"
-          stroke="4"
-          stroke-length="0.15"
-          bg-opacity="0.1"
-          speed="1.3"
-          color="black" 
-        ></l-infinity>
-      );
-    }
     console.log(dateStr);
     const yr = dateStr.substring(0, 4);
     const mo = dateStr.substring(5, 7);
@@ -65,12 +53,14 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-row h-dvh w-full bg-[url('./img/bg.png')] bg-center bg-cover bg-no-repeat text-black">        
+    <div className="flex flex-row h-full w-full bg-gradient-to-r from-purple-950 to-blue-700">        
       <div className="flex flex-row flex-direction justify-around h-auto w-full">
         <div className="flex flex-col justify-center items-center w-2/5">
-          <h1 className="flex justify-center text-4xl"> SEATTLE </h1>  
+          <h1 className="flex justify-center text-white text-4xl">
+            WEATHER_API for SEATTLE
+          </h1>  
           <ul 
-            className="flex flex-col w-1/2 text-black backdrop-blur-[20px] p-6 my-10 rounded-lg text-2xl" 
+            className="flex flex-col w-1/2 text-white bg-slate-100/20 backdrop-blur-[20px] p-6 my-10 rounded-md text-2xl" 
             key={todayData.datetime}
           >
             <li className="mb-6 text-5xl">{getDay(todayData.datetime || '')}
@@ -83,12 +73,12 @@ export default function Home() {
             
           </ul>        
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="grid grid-cols-2 ">
           {
             fiveDayData?.map((weather) => {
               return(
                 <ul 
-                  className="flex items-start justify-center flex-col m-12 px-10 py-4 rounded-lg text-4xl backdrop-blur-[20px]" 
+                  className="flex items-start justify-center flex-col m-24 px-12 py-4 rounded-sm text-4xl text-white backdrop-blur-[400px]" 
                   key={weather.datetime}
                 >
                   <li className="mb-6">{getDay(weather.datetime)}</li>
