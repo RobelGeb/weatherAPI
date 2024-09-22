@@ -9,14 +9,22 @@ import Image from "next/image";
 export default function Home() {
   const [fiveDayData, setfiveDayData] = useState([]);
   const [todayData, setTodayData] = useState([]);
+  const [city, setCity] = useState("");
 
-  useEffect(() => {
-    connect();
-    //console.log(JSON.stringify(todayData));
-  }, []);
+  // useEffect(() => {
+  //   connect();
+  //   //console.log(JSON.stringify(todayData));
+  // }, []);
 
-  const connect = async () => {
-    await fetch("http://localhost:8000/", {mode: 'cors'})
+  const connect = async (val) => {
+    setCity(val);
+    await fetch("http://localhost:8000/", 
+      {
+        mode: 'cors',
+        data: JSON.stringify ({
+          city: val
+        })
+      })
       .then((res) => res.json())
       .then(data => {
         setTodayData(data.fiveDay[0]);
@@ -53,11 +61,14 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-row h-full w-full bg-gradient-to-r from-purple-950 to-blue-700">        
+    <div className="flex flex-row h-full w-full bg-gradient-to-r from-slate-500 to-amber-950">        
       <div className="flex flex-row flex-direction justify-around h-auto w-full">
         <div className="flex flex-col justify-center items-center w-2/5">
           <h1 className="flex justify-center text-white text-4xl">
-            WEATHER_API for SEATTLE
+          <form action={connect} className="text-black">
+            <input type="text" name="city" />
+            <button type="submit" className="text-white px-2 mx-2 rounded-sm hover:bg-orange-700">Submit</button>
+          </form>
           </h1>  
           <ul 
             className="flex flex-col w-1/2 text-white bg-slate-100/20 backdrop-blur-[20px] p-6 my-10 rounded-md text-2xl" 
@@ -78,7 +89,7 @@ export default function Home() {
             fiveDayData?.map((weather) => {
               return(
                 <ul 
-                  className="flex items-start justify-center flex-col m-24 px-12 py-4 rounded-sm text-4xl text-white backdrop-blur-[400px]" 
+                  className="flex items-start justify-center flex-col m-24 px-12 py-4 rounded-lg text-4xl text-white backdrop-blur-[400px]" 
                   key={weather.datetime}
                 >
                   <li className="mb-6">{getDay(weather.datetime)}</li>

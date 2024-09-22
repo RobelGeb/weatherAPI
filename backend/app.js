@@ -10,10 +10,13 @@ app.use(express.json());
 
 dotenv.config({path:"./config.env"});
 
-const weatherLink = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/Seattle%2C%20WA?unitGroup=us&elements=datetime%2Cname%2Ctempmax%2Ctemp%2Cconditions%2Cdescription%2Cicon&include=days%2Cfcst&key=${process.env.API_KEY}&contentType=json`;
 
-const getWeather = async () => {
+
+const getWeather = async (req) => {
     try {
+        const weatherLink = (`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/`+
+            `${req}?unitGroup=us&elements=datetime%2Cname%2Ctempmax%2Ctemp%2Cconditions%2Cdescription%2Cicon&include=days%2Cfcst&key=`+
+            `${process.env.API_KEY}&contentType=json`);
         const data = await superagent.get(weatherLink);
         const report = data.body.days;
         //console.log(`Weather report: ${JSON.stringify(days)}`)
@@ -26,7 +29,7 @@ const getWeather = async () => {
 getWeather();
 
 app.get('/', async (req, res) => {
-    const result = await getWeather();
+    const result = await getWeather(req.city);
     const fiveDay = result.splice(0,5);
     console.log(fiveDay);
     res
@@ -34,10 +37,10 @@ app.get('/', async (req, res) => {
     .json({fiveDay});
 });
 
-app.post('/', (req, res) => {
-    console.log('Connected to front end!');
-    res.status(200);
-});
+// app.post('/', (req, res) => {
+//     console.log('Connected to front end!');
+//     res.status(200);
+// });
 
 app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}...`)
