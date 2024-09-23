@@ -1,26 +1,18 @@
 import localFont from "next/font/local";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const roboto = Roboto({ subsets: ['latin'], weight:'300' })
 
 export const metadata = {
-  title: "Weather API App",
+  title: "Weather",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="flex h-full w-full">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex h-full w-full`}
+        className={`${roboto.className} antialiased flex h-full w-full`}
       >
         {children}
       </body>

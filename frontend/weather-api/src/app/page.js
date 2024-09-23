@@ -1,20 +1,11 @@
 "use client"
 import { useState, useEffect } from "react";
 import Image from "next/image";
-//import data from './data.json';
-
-//const wetha = data.weathers;
-//console.log(`weather: ${JSON.stringify(wetha)}`);
 
 export default function Home() {
   const [fiveDayData, setfiveDayData] = useState([]);
   const [todayData, setTodayData] = useState([]);
   const [city, setCity] = useState("");
-
-  // useEffect(() => {
-  //   connect();
-  //   //console.log(JSON.stringify(todayData));
-  // }, []);
 
   const connect = async (val) => {
     setCity(val);
@@ -61,47 +52,52 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-row h-full w-full bg-gradient-to-r from-slate-500 to-amber-950">        
-      <div className="flex flex-row flex-direction justify-around h-auto w-full">
-        <div className="flex flex-col justify-center items-center w-2/5">
-          <h1 className="flex justify-center text-white text-4xl">
-          <form action={connect} className="text-black">
-            <input type="text" name="city" />
-            <button type="submit" className="text-white px-2 mx-2 rounded-sm hover:bg-orange-700">Submit</button>
-          </form>
-          </h1>  
-          <ul 
-            className="flex flex-col w-1/2 text-white bg-slate-100/20 backdrop-blur-[20px] p-6 my-10 rounded-md text-2xl" 
-            key={todayData.datetime}
-          >
-            <li className="mb-6 text-5xl">{getDay(todayData.datetime || '')}
-            </li>
-            <li className="mb-6 text-8xl">{todayData.temp} °F</li>
-            <div className="flex flex-row items-center">
-              <li className="text-4xl">{todayData.conditions}</li>
-              <Image src={require(`./icons/${getIcon(todayData.icons || '')}`)} width={100} height={100}></Image>
-            </div>
-            
-          </ul>        
-        </div>
-        <div className="grid grid-cols-2 ">
-          {
-            fiveDayData?.map((weather) => {
-              return(
-                <ul 
-                  className="flex items-start justify-center flex-col m-24 px-12 py-4 rounded-lg text-4xl text-white backdrop-blur-[400px]" 
-                  key={weather.datetime}
-                >
-                  <li className="mb-6">{getDay(weather.datetime)}</li>
-                  <li className="mb-6 text-6xl">{weather.temp} °F</li>
-                  <li>{weather.conditions}</li>
+    <div className="flex flex-col h-full w-full bg-gradient-to-r from-slate-500 to-amber-950"> 
+      <h1 className="flex mt-4 justify-center text-white text-3xl">Get your 5-day forecast</h1>       
+      <h2 className="flex justify-center mt-4 text-white text-3xl">
+        <form action={connect}>
+          Enter City:
+          <input type="text" name="city" className="ml-3 bg-black/10 border-slate-800/10 border-2 backdrop-blur-[400px] hover:bg-black/30" />
+          <button type="submit" className="text-white px-2 mx-2 rounded-sm hover:bg-slate-500/35">Search</button>
+        </form>
+      </h2>
+      {
+        city &&
+        <div className="flex flex-row flex-direction justify-around h-full w-full">
+          <div className="flex flex-col justify-center items-center w-2/5">
+              <ul 
+                className="flex flex-col w-1/2 text-white bg-slate-100/20 backdrop-blur-[20px] p-6 my-10 rounded-md text-2xl" 
+                key={todayData.datetime}
+              >
+                <li className="mb-6 text-5xl">{getDay(todayData.datetime || '')}
+                </li>
+                <li className="mb-6 text-8xl">{todayData.temp} °F</li>
+                <div className="flex flex-row items-center">
+                  <li className="text-4xl">{todayData.conditions}</li>
                   <Image src={require(`./icons/${getIcon(todayData.icons || '')}`)} width={100} height={100}></Image>
-                </ul>          
-              );
-            })
-          }
+                </div>
+                
+              </ul>        
+          </div>
+          <div className="grid grid-cols-2 ">
+            {
+              fiveDayData?.map((weather) => {
+                return(
+                  <ul 
+                    className="flex items-start justify-center flex-col m-10 px-12 py-2 rounded-lg text-4xl text-white backdrop-blur-[400px]" 
+                    key={weather.datetime}
+                  >
+                    <li className="mb-6">{getDay(weather.datetime)}</li>
+                    <li className="mb-6 text-6xl">{weather.temp} °F</li>
+                    <li>{weather.conditions}</li>
+                    <Image src={require(`./icons/${getIcon(todayData.icons || '')}`)} width={100} height={100}></Image>
+                  </ul>          
+                );
+              })
+            }
+          </div>
         </div>
-      </div>
+      }
     </div>
   );
 }
