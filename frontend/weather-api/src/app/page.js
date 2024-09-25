@@ -1,20 +1,26 @@
 "use client"
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Head from "next/head";
 
 export default function Home() {
   const [fiveDayData, setfiveDayData] = useState([]);
   const [todayData, setTodayData] = useState([]);
   const [city, setCity] = useState("");
 
-  const connect = async (val) => {
-    setCity(val);
-    await fetch("http://localhost:8000/", 
+  const connect = async (e) => {
+    e.preventDefault();
+    console.log('CONNECTED');
+    await fetch("http://localhost:8000/5day", 
       {
         mode: 'cors',
-        data: JSON.stringify ({
-          city: val
-        })
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          data: city
+        }),
+        method: 'POST'
       })
       .then((res) => res.json())
       .then(data => {
@@ -40,7 +46,7 @@ export default function Home() {
   }
   
   const getIcon = (conditionStr) => {
-    console.log(conditionStr);
+    //console.log(conditionStr);
     if (conditionStr.includes("rain")) {
       return "rain.svg";
     } else if (conditionStr.includes("clear")) {
@@ -53,12 +59,23 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-full w-full bg-gradient-to-r from-slate-500 to-amber-950"> 
+    <div className="flex flex-col h-full w-full bg-gradient-to-r from-slate-800 via-blue-950 to-slate-900"> 
+    <Head>
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+      <link rel="manifest" href="/site.webmanifest" />
+    </Head>
       <h1 className="flex mt-4 justify-center text-white text-3xl">Get your 5-day forecast</h1>       
       <h2 className="flex justify-center mt-4 text-white text-2xl">
-        <form action={connect}>
-          Enter City:
-          <input type="text" name="city" className="ml-3 bg-black/10 border-slate-800/10 border-2 backdrop-blur-[400px] hover:bg-black/30"/>
+        <form onSubmit={connect}>
+          <input 
+            type="text" 
+            name="city"
+            placeholder="City, State / ZIP" 
+            className="ml-3 px-1 w-96 bg-black/10 border-slate-800/10 border-2 backdrop-blur-[400px] hover:bg-black/30"
+            onChange={(e) => setCity(e.target.value)}
+          />
           <button type="submit" className="text-white px-2 mx-2 rounded-sm hover:bg-slate-900/30">Search</button>
         </form>
       </h2>
@@ -72,13 +89,14 @@ export default function Home() {
               >
                 <li className="mb-6 text-7xl">Today</li>
                 <li className="mb-6 text-9xl">{todayData.temp} °F</li>
+                <li className="text-3xl">Feels like {todayData.feelslike} °F</li>
                 <div className="flex flex-row items-center">
                   <li className="text-5xl">{todayData.conditions}</li>
                   <Image 
                     src={require(`./icons/${getIcon(todayData.icon || '')}`)} 
                     width={100} 
                     height={100}
-                    alt={todayData.icon}
+                    alt={todayData.icon || 'icon'}
                     ></Image>
                 </div>
                 
@@ -99,7 +117,7 @@ export default function Home() {
                       src={require(`./icons/${getIcon(weather.icon || '')}`)} 
                       width={100} 
                       height={100}
-                      alt={weather.icon}
+                      alt={weather.icon || 'icon'}
                       >
                     </Image>
                   </ul>          
