@@ -8,7 +8,17 @@ const Redis = require("redis");
 
 dotenv.config({path:"./config.env"});
 
-const client = Redis.createClient(process.env.REDIS_PORT);
+const redisClient = Redis.createClient(process.env.REDIS_PORT);
+
+(async () => {
+    redisClient.on('error', err => console.log('Redis Client Error', err));
+    redisClient.on('ready', () => console.log('Redis is ready.'));
+
+    await redisClient.connect();
+    await redisClient.ping();
+})();
+
+
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
@@ -27,7 +37,6 @@ app.use(
 
 app.use(express.json({ extended: false }));
 
-client.on('error', err => console.log('Redis Client Error', err));
 
 const getWeather = async (city) => {
     console.log("city: ", city.body)
@@ -44,7 +53,16 @@ const getWeather = async (city) => {
 
 app.post('/5day', async (req, res) => {
     //console.log(`request = ${JSON.stringify(req.body.data)}`);
-    const result = await getWeather(req);
+    const value = await redisClient.get(req.body.data);
+    var result;
+    if (value) {
+        result = JSON.parse(value);
+        console.log("Cache hit for ", req.body.data);
+    } else {
+        console.log("Cache miss for ", req.body.data);
+        result = await getWeather(req);
+        redisClient.setEx(req.body.data, 3600, JSON.stringify(result.splice(0,5)));
+    }
     const fiveDay = result.splice(0,5);
     res
     .status(200)
