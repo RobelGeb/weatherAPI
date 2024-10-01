@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="flex h-full w-full">
       <body
-        className={`${roboto.className} antialiased flex h-full w-full`}
+        className={`${roboto.className} antialiased flex h-full w-full bg-gradient-to-r from-slate-800 via-blue-950 to-slate-900`}
       >
         {children}
       </body>
