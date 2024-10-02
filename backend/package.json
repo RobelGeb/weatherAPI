@@ -2,9 +2,9 @@
   "name": "weatherapi",
   "version": "1.0.0",
   "description": "a weather API that fetches and returns weather data",
-  "main": "app.js",
+  "main": "./api/index.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
