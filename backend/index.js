@@ -27,7 +27,7 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
-//app.use(limiter);
+app.use(limiter);
 
 app.use(
     cors({
